@@ -9,6 +9,7 @@ const friendRoutes = require('./routes/friends')
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(express.urlencoded({ extended: true }))
 
 app.use(express.json());
 app.use(session({ secret: 'fingerprint', resave: false, saveUninitialized: true }));
@@ -19,7 +20,7 @@ app.use(session({ secret: 'fingerprint', resave: false, saveUninitialized: true 
 //use auth routes
 app.use('/', authRoutes)
     //friends rotes
-app.use('/', friendRoutes)
+app.use('/friends', friendRoutes)
 
 
 
