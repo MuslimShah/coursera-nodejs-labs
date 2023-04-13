@@ -35,7 +35,7 @@ regd_users.post("/login", (req, res) => {
     const password = req.body.password;
 
     if (authenticatedUser(username, password)) {
-        const accessToken = jwt.sign({ username: username }, `${process.env.jwtSecretKey}`, { expiresIn: 60 * 60 });
+        const accessToken = jwt.sign({ user: username }, `${process.env.jwtSecretKey}`, { expiresIn: 60 * 60 });
         req.session.authorization = {
             accessToken,
             user: username
