@@ -48,17 +48,22 @@ public_users.get('/', async(req, res) => {
     //this code gets the list of all available books
     const getBooks = new Promise((resolve, reject) => {
         try {
-            const titles = Object.values(books).map(book => {
-                return book.title;
-            });
-            return resolve(titles);
+            //return list of all books
+            return resolve(books);
         } catch (error) {
             return reject(`getting books list error ${error}`);
         }
 
     })
     const foundBooks = await getBooks;
-    return res.status(200).json({ message: "list of books available", books: foundBooks });
+    console.log(foundBooks);
+    if (Object.keys(books).length > 0) {
+        return res.status(200).json({ message: "list of books available", books: foundBooks });
+
+    } else {
+        return res.status(404).json({ message: "books not found in the list" });
+
+    }
 });
 
 // Get book details based on ISBN
@@ -66,19 +71,10 @@ public_users.get('/isbn/:isbn', async function(req, res) {
     const isbn = req.params.isbn;
     const getByIsbn = new Promise((resolve, reject) => {
         try {
-            const isbns = Object.keys(books);
-            let foundBook;
-            isbns.forEach(values => {
-                if (values === isbn) {
-                    foundBook = books[values];
-                    return;
-                }
-            })
+            let foundBook = books[isbn];
             return resolve(foundBook);
-
         } catch (error) {
             return reject(`getting books by isbn error ${error}`);
-
         }
     })
     const book = await getByIsbn;
@@ -88,7 +84,7 @@ public_users.get('/isbn/:isbn', async function(req, res) {
     } else {
         return res.status(404).json({ message: 'book not found' });
     }
-    //Write your code here
+
 
 });
 
@@ -138,9 +134,25 @@ public_users.get('/title/:title', async(req, res) => {
 });
 
 //  Get book review
-public_users.get('/review/:isbn', function(req, res) {
-    //Write your code here
-    return res.status(300).json({ message: "Yet to be implemented" });
+public_users.get('/review/:isbn', async(req, res) => {
+    const getReviewsByIsbn = new Promise((resolve, reject) => {
+        const isbn = req.params.isbn
+        try {
+            let foundBook = books[isbn];
+            return resolve(foundBook);
+        } catch (error) {
+            return reject(`getting books reviews by isbn error ${error}`);
+
+        }
+    })
+    const book = await getReviewsByIsbn;
+    if (book) {
+        return res.status(200).json({ reviews: book.reviews });
+    } else {
+        return res.status(404).json({ message: 'book not found' });
+    }
+
+
 });
 
 module.exports.general = public_users;

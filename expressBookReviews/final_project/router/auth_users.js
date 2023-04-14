@@ -46,9 +46,28 @@ regd_users.post("/login", (req, res) => {
 });
 
 // Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {
-    //Write your code here
-    return res.status(300).json({ message: "Yet to be implemented" });
+regd_users.put("/auth/review/:isbn", async(req, res) => {
+    const user = req.user;
+    const addReview = new Promise((resolve, reject) => {
+        const isbn = req.params.isbn
+        try {
+            books[isbn].reviews[user] = req.body.review;
+            return resolve(books);
+
+        } catch (error) {
+            return reject(`getting books reviews by isbn error ${error}`);
+
+        }
+    })
+    const book = await addReview;
+    if (book) {
+        return res.status(200).json({ reviews: book });
+    } else {
+        return res.status(404).json({ message: 'book not found' });
+    }
+
+
+
 });
 
 module.exports.authenticated = regd_users;
