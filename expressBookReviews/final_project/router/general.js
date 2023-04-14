@@ -67,35 +67,74 @@ public_users.get('/isbn/:isbn', async function(req, res) {
     const getByIsbn = new Promise((resolve, reject) => {
         try {
             const isbns = Object.keys(books);
-            let searchedBooks;
+            let foundBook;
             isbns.forEach(values => {
                 if (values === isbn) {
-                    searchedBooks = books[values];
+                    foundBook = books[values];
                     return;
                 }
             })
-            return resolve(searchedBooks);
+            return resolve(foundBook);
 
         } catch (error) {
             return reject(`getting books by isbn error ${error}`);
 
         }
     })
-    const foundBooks = await getByIsbn;
+    const book = await getByIsbn;
+
+    if (book) {
+        return res.status(200).json({ book });
+    } else {
+        return res.status(404).json({ message: 'book not found' });
+    }
     //Write your code here
-    return res.status(300).json({ books: foundBooks });
+
 });
 
 // Get book details based on author
-public_users.get('/author/:author', function(req, res) {
-    //Write your code here
-    return res.status(300).json({ message: "Yet to be implemented" });
+public_users.get('/author/:author', async(req, res) => {
+    const author = req.params.author;
+    const searchByAuthor = new Promise((resolve, reject) => {
+        try {
+            const foundBook = Object.values(books).filter(book => {
+                return book.author === author;
+            })
+            return resolve(foundBook);
+        } catch (error) {
+            return reject(`searching by author error ${error}`)
+        }
+    })
+    const book = await searchByAuthor;
+    if (book.length > 0) {
+        return res.status(200).json({ book });
+    } else {
+        return res.status(404).json({ message: 'book not found' });
+    }
+
 });
 
 // Get all books based on title
-public_users.get('/title/:title', function(req, res) {
-    //Write your code here
-    return res.status(300).json({ message: "Yet to be implemented" });
+public_users.get('/title/:title', async(req, res) => {
+    const title = req.params.title;
+    const searchByTitle = new Promise((resolve, reject) => {
+        try {
+            const foundBook = Object.values(books).filter(book => {
+                return book.title === title;
+            })
+            return resolve(foundBook);
+        } catch (error) {
+            return reject(`searching by title error ${error}`)
+        }
+    })
+    const book = await searchByTitle;
+    if (book.length > 0) {
+        return res.status(200).json({ book });
+    } else {
+        return res.status(404).json({ message: 'book not found' });
+    }
+
+
 });
 
 //  Get book review
