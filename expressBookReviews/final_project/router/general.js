@@ -23,25 +23,16 @@ public_users.post("/register", async(req, res) => {
                 }
                 users.push(user);
                 return resolve(users);
-
             } catch (error) {
                 return reject(`adding user error:${error}`);
             }
         })
         const upadatedUsers = await addUser;
         return res.status(200).json({ message: "the user has been registered successfully" });
-
-
     } else {
         return res.status(401).json({ message: "user already exists" });
-
     }
-
 });
-
-
-
-
 
 // Get the book list available in the shop
 public_users.get('/', async(req, res) => {
@@ -53,15 +44,12 @@ public_users.get('/', async(req, res) => {
         } catch (error) {
             return reject(`getting books list error ${error}`);
         }
-
     })
     const foundBooks = await getBooks;
     if (Object.keys(books).length > 0) { //if books exists
         return res.status(200).json({ message: "list of books available", books: foundBooks });
-
     } else {
         return res.status(404).json({ message: "books not found in the list" });
-
     }
 });
 
@@ -83,14 +71,11 @@ public_users.get('/isbn/:isbn', async function(req, res) {
         }
     })
     const book = await getByIsbn;
-
     if (book) {
         return res.status(200).json({ book });
     } else {
         return res.status(404).json({ message: 'book not found' });
     }
-
-
 });
 
 // Get book details based on author
@@ -118,7 +103,6 @@ public_users.get('/author/:author', async(req, res) => {
     } else {
         return res.status(404).json({ message: 'book not found' });
     }
-
 });
 
 // Get all books based on title
@@ -146,8 +130,6 @@ public_users.get('/title/:title', async(req, res) => {
     } else {
         return res.status(404).json({ message: 'book not found' });
     }
-
-
 });
 
 //  Get book review
@@ -160,13 +142,11 @@ public_users.get('/review/:isbn', async(req, res) => {
      */
     const isbn = req.params.isbn
     const getReviewsByIsbn = new Promise((resolve, reject) => {
-
         try {
             let foundBook = books[isbn];
             return resolve(foundBook);
         } catch (error) {
             return reject(`getting books reviews by isbn error ${error}`);
-
         }
     })
     const book = await getReviewsByIsbn;
@@ -175,8 +155,6 @@ public_users.get('/review/:isbn', async(req, res) => {
     } else {
         return res.status(404).json({ message: 'book not found' });
     }
-
-
 });
 
 module.exports.general = public_users;
