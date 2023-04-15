@@ -56,8 +56,7 @@ public_users.get('/', async(req, res) => {
 
     })
     const foundBooks = await getBooks;
-    console.log(foundBooks);
-    if (Object.keys(books).length > 0) {
+    if (Object.keys(books).length > 0) { //if books exists
         return res.status(200).json({ message: "list of books available", books: foundBooks });
 
     } else {
