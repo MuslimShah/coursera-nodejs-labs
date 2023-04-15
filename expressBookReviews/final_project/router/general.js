@@ -67,6 +67,12 @@ public_users.get('/', async(req, res) => {
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn', async function(req, res) {
+    /**
+     * gets the isbn in req.params
+     * search the book for specific isbn
+     * if the book is found returns it 
+     * otherwise returns book not found message
+     */
     const isbn = req.params.isbn;
     const getByIsbn = new Promise((resolve, reject) => {
         try {
@@ -89,6 +95,12 @@ public_users.get('/isbn/:isbn', async function(req, res) {
 
 // Get book details based on author
 public_users.get('/author/:author', async(req, res) => {
+    /**
+     * takes the author name in req.params
+     * search the book of specified author 
+     * if found return it
+     * otherwise show book not found message
+     */
     const author = req.params.author;
     const searchByAuthor = new Promise((resolve, reject) => {
         try {
@@ -111,6 +123,12 @@ public_users.get('/author/:author', async(req, res) => {
 
 // Get all books based on title
 public_users.get('/title/:title', async(req, res) => {
+    /**
+     * takes the title of book in req.params
+     * search the book of specified title 
+     * if found return it
+     * otherwise show book not found message
+     */
     const title = req.params.title;
     const searchByTitle = new Promise((resolve, reject) => {
         try {
@@ -134,8 +152,15 @@ public_users.get('/title/:title', async(req, res) => {
 
 //  Get book review
 public_users.get('/review/:isbn', async(req, res) => {
+    /**
+     * takes the isbn of book in req.params
+     * search the book of specified isbn 
+     * if found  simply return reviews of the given user to the book
+     * otherwise show book not found message
+     */
+    const isbn = req.params.isbn
     const getReviewsByIsbn = new Promise((resolve, reject) => {
-        const isbn = req.params.isbn
+
         try {
             let foundBook = books[isbn];
             return resolve(foundBook);

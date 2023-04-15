@@ -47,7 +47,7 @@ regd_users.post("/login", (req, res) => {
         }
         return res.status(200).json({ message: `User ${username} logged in successfully` });
     }
-    return res.status(300).json({ message: "unauthorized user" });
+    return res.status(401).json({ message: "unauthorized user" });
 });
 
 // Add a book review
@@ -71,7 +71,7 @@ regd_users.put("/auth/review/:isbn", async(req, res) => {
             }
 
         } catch (error) {
-            return reject(`getting books reviews by isbn error ${error}`);
+            return reject(`adding books reviews error ${error}`);
 
         }
     })
@@ -105,7 +105,7 @@ regd_users.delete("/auth/review/:isbn", async(req, res) => {
             }
 
         } catch (error) {
-            return reject(`getting books reviews by isbn error ${error}`);
+            return reject(`deleting books reviews error ${error}`);
 
         }
     })
@@ -141,7 +141,7 @@ regd_users.patch("/auth/review/:isbn", async(req, res) => {
             }
 
         } catch (error) {
-            return reject(`getting books reviews by isbn error ${error}`);
+            return reject(`modifying  books reviews  error ${error}`);
 
         }
     })
