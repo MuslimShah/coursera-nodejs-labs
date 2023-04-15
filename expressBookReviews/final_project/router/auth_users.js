@@ -118,6 +118,43 @@ regd_users.delete("/auth/review/:isbn", async(req, res) => {
 
 });
 
+
+//modify a user review
+
+regd_users.patch("/auth/review/:isbn", async(req, res) => {
+    /**
+     * this code modifies the review of a user for the given isbn book
+     * first of all it checks if the book exists or not
+     * if exists then it simply updates the review of the user 
+     * otherwise show a review not found message
+     */
+    const user = req.user;
+    const isbn = req.params.isbn
+    const modifyReview = new Promise((resolve, reject) => {
+        try {
+            const bookExists = books[isbn];
+            if (bookExists && books[isbn].reviews[user]) {
+                books[isbn].reviews[user] = req.body.review;
+                return resolve(true);
+            } else {
+                return resolve(false);
+            }
+
+        } catch (error) {
+            return reject(`getting books reviews by isbn error ${error}`);
+
+        }
+    })
+    const book = await modifyReview;
+    if (book) {
+        return res.status(200).json({ message: 'your review has been modified successfully', books });
+    } else {
+        return res.status(404).json({ message: 'review not found' });
+    }
+
+});
+
+
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
